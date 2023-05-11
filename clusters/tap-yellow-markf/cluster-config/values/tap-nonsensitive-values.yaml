@@ -1,0 +1,70 @@
+---
+tap_install:
+  values:
+      shared:
+        ingress_domain: "markf.tap-yellow.azure.tanzu-studio.com"
+        ingress_issuer: ""
+
+      ceip_policy_disclosed: true
+
+      profile: full
+
+      supply_chain: basic
+
+      ootb_supply_chain_basic:
+        registry:
+          server: "index.docker.io"
+          respository: "fynesy"
+
+      contour:
+        envoy:
+          service:
+            type: LoadBalancer
+
+      buildservice:
+        kp_default_repository: "fynesy/buildservice"
+
+      tap_gui:
+        service_type: ClusterIP
+        metadataStoreAutoconfiguration: true
+        app_config:
+          auth:
+            allowGuestAccess: true
+          catalog:
+            locations:
+              - type: url
+                target: http://github.com/tfynes-pivotal/tapblankcatalog/blob/main/catalog-info.yaml
+ 
+      metadata_store:
+        ns_for_export_app_cert: "*"
+        app_service_type: ClusterIP
+
+
+      scanning: 
+        metadataStore:
+          url: ""
+
+      grype:
+        namespace: "default"
+        targetImagePullSecret: "tap-registry"
+
+      policy:
+        tuf_enabled: false
+
+      cnrs:
+        domain_template: '{{.Name}}-{{.Namespace}}.{{.Domain}}'
+
+
+      namespace_provisioner:
+        controller: false
+        gitops_install:
+          ref: origin/main
+          subPath: clusters/tap-yellow-markf/cluster-config/namespaces
+          url: https://github.com/tfynes-pivotal/tap-gitops-workshop
+        additional_sources:
+        - git:
+            ref: origin/main
+            subPath: clusters/tap-yellow-markf/cluster-config/namespaces/namespace-resources
+            url: https://github.com/tfynes-pivotal/tap-gitops-workshop
+          path: _ytt_lib/namespace-resources
+      
