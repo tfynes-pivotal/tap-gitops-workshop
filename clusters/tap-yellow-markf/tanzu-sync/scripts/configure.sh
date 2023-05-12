@@ -19,6 +19,9 @@ if [[ $# -ne 0 ]]; then
 fi
 
 TAP_PKGR_REPO=${TAP_PKGR_REPO:-registry.tanzu.vmware.com/tanzu-application-platform/tap-packages}
+echo xxx
+echo $TAP_PKGR_REPO
+echo xxx
 
 # detect remote git repo and upstream branch
 remote_branch=$( git status --porcelain=2 --branch | grep "^# branch.upstream" | awk '{ print $3 }' )
